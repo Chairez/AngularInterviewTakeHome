@@ -1,10 +1,9 @@
 <mat-sidenav-container class="employee-wrapper">
     <mat-sidenav mode="side" opened class="left-pane">
-        <app-employee-list (selectEmployee)="onEmployeeSelected($event)" [employees]="employees"></app-employee-list>
+        <app-employee-list [employees]="employees"></app-employee-list>
     </mat-sidenav>
 
     <mat-sidenav-content class="right-pane">
-        <app-employee-crafting [employee]="selectedEmployee" (savedEmployee)="onEmployeeSaved($event)"
-            (removedEmployee)="onEmployeeRemoved($event)"></app-employee-crafting>
+        <app-employee-crafting></app-employee-crafting>
     </mat-sidenav-content>
 </mat-sidenav-container>

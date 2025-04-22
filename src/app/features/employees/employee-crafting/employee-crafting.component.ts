@@ -12,10 +12,8 @@ export class EmployeeCraftingComponent implements OnInit {
 
   dataService = inject(DataService);
   employeeService = inject(EmployeeService);
-
   @Input() employee: any;
-  @Output() savedEmployee = new EventEmitter<any>();
-  @Output() removedEmployee = new EventEmitter<any>();
+
   employeeForm: FormGroup;
   positions: any;
   states: any;
@@ -26,11 +24,11 @@ export class EmployeeCraftingComponent implements OnInit {
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
-      positionId: ['', Validators.required],
+      positionId: [0, Validators.required],
       phoneNumber: ['',
         [
           Validators.required,
-          Validators.pattern(/^\d{10}$/) // Format: 1234567890
+          Validators.pattern(/^\d{3}-\d{3}-\d{4}$/) // Format: 123-456-7890
         ]
       ],
       jobRequirements: [''],
@@ -50,10 +48,18 @@ export class EmployeeCraftingComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // subscribe to employeeBoolean
-    this.employeeService.getEmployeeChangeObservable().subscribe((value: Boolean) => {
+
+    this.employeeService.getAddEmployeeObservable().subscribe((value: Boolean) => {
       if (value) {
         this.employeeForm.reset();
+      }
+    }
+    );
+
+    this.employeeService.getCurrentEmployee().subscribe((employee: any) => {
+      if (employee) {
+        this.employeeForm.patchValue(employee);
+        this.employee = employee;
       }
     }
     );
@@ -70,15 +76,23 @@ export class EmployeeCraftingComponent implements OnInit {
     if (this.employeeForm.invalid) {
       return;
     }
-    const updatedEmployee = this.employeeForm.value;
-    this.savedEmployee.emit(updatedEmployee);
-    this.employeeService.addEmployeeChangeObservable(true);
+
+    this.employeeService.updateEmployee(this.employeeForm.value);
+    this.cleanForm();
   }
 
+
   remove() {
-    if (this.employee !== null) {
-      this.removedEmployee.emit(this.employee);
-      this.employeeForm.reset();
+    if (this.employee != null) {
+      this.employeeService.removeEmployee(this.employee);
+      this.cleanForm();
     }
+  }
+
+  private cleanForm() {
+    this.employeeForm.reset();
+    this.employeeService.changeAddEmployee(false);
+    this.employeeService.changeSelectedEmployee(null);
+    this.employee = null;
   }
 }

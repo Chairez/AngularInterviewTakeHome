@@ -14,7 +14,6 @@ export class EmployeeListComponent implements OnInit {
   dataService = inject(DataService);
   employeeService = inject(EmployeeService);
   @Input() employees: any[] = [];
-  @Output() selectEmployee = new EventEmitter<any>();
 
   constructor() { }
 
@@ -23,7 +22,7 @@ export class EmployeeListComponent implements OnInit {
 
   select(empParam: any) {
     this.selectedEmployee = empParam;
-    this.selectEmployee.emit(empParam);
+    this.employeeService.changeSelectedEmployee(empParam);
   }
 
   getPositionName(positionId: string) {
@@ -32,6 +31,6 @@ export class EmployeeListComponent implements OnInit {
 
   addEmployee() {
     this.selectedEmployee = null;
-    this.employeeService.addEmployeeChangeObservable(true);    
+    this.employeeService.changeAddEmployee(true);    
   }
 }

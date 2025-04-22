@@ -1,36 +1,13 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
+import { Employee } from '../common/models/Employee.model';
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class EmployeeService {
 
-  private employeeChangeSubject = new BehaviorSubject<Boolean>(false);
-
-  addEmployeeChangeObservable(value: Boolean) {
-    this.employeeChangeSubject.next(value);
-  }
-
-  getEmployeeChangeObservable() {
-    return this.employeeChangeSubject.asObservable();
-  }
-
-  removeEmployee($event: any) {
-    const index = this.employees.findIndex(emp => emp.employeeId === $event.employeeId);
-    if (index !== -1) {
-      this.employees.splice(index, 1);
-    }
-  }
-
-  updateEmployee(updatedEmployee: any) {
-    const index = this.employees.findIndex(emp => emp.employeeId === updatedEmployee.employeeId);
-    if (index !== -1) {
-      this.employees[index] = updatedEmployee;
-    } else {
-      this.employees.push(updatedEmployee);
-    }
-  }
 
   employees = [
     {
@@ -85,7 +62,59 @@ export class EmployeeService {
       state: 'GA',
       zip: '30314'
     },
-  ]
+  ];
+
+  private addNewEmployee$ = new BehaviorSubject<Boolean>(false);
+
+  private currentEmployee$ = new BehaviorSubject<any>(null);
+  private employees$ = new BehaviorSubject<any[]>(this.employees);
+
+  changeAddEmployee(value: Boolean) {
+    this.addNewEmployee$.next(value);
+  }
+
+  getAddEmployeeObservable() {
+    return this.addNewEmployee$.asObservable();
+  }
+
+  getEmployeesList() {
+    return this.employees$.asObservable();
+  }
+
+  updateList() {
+    this.employees$.next(this.employees);
+  }
+
+  changeSelectedEmployee(employee: any) {
+    if (employee) {
+      employee.positionId = Number(employee.positionId);
+      this.currentEmployee$.next(employee);
+    }
+  }
+
+  getCurrentEmployee() {
+    return this.currentEmployee$.asObservable();
+  }
+
+  removeEmployee($event: any) {
+    const index = this.employees.findIndex(emp => emp.employeeId === $event.employeeId);
+    if (index !== -1) {
+      this.employees.splice(index, 1);
+    }
+    this.updateList();
+  }
+
+  updateEmployee(updatedEmployee: any) {
+    const index = this.employees.findIndex(emp => emp.employeeId === updatedEmployee.employeeId);
+    if (index !== -1) {
+      this.employees[index] = updatedEmployee;
+    }
+    else {
+      this.employees.push(updatedEmployee);
+    }
+
+    this.updateList();
+  }
 
   constructor() { }
 
