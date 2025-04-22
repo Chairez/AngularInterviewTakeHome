@@ -65,7 +65,6 @@ export class EmployeeService {
   ];
 
   private addNewEmployee$ = new BehaviorSubject<Boolean>(false);
-
   private currentEmployee$ = new BehaviorSubject<any>(null);
   private employees$ = new BehaviorSubject<any[]>(this.employees);
 

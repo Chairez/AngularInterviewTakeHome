@@ -1,4 +1,4 @@
-import { Component, EventEmitter, inject, Input, OnInit, Output, SimpleChanges } from '@angular/core';
+import { Component, inject, Input, OnInit, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DataService } from 'src/app/services/data.service';
 import { EmployeeService } from 'src/app/services/employee.service';
@@ -14,11 +14,21 @@ export class EmployeeCraftingComponent implements OnInit {
   employeeService = inject(EmployeeService);
   @Input() employee: any;
 
-  employeeForm: FormGroup;
+  employeeForm: FormGroup = this.fb.group({});
   positions: any;
   states: any;
 
   constructor(private fb: FormBuilder) {
+    this.initForm();
+    this.getCatalogs();
+  }
+
+  private getCatalogs() {
+    this.positions = this.dataService.getPositions();
+    this.states = this.dataService.getStates();
+  }
+
+  private initForm() {
     this.employeeForm = this.fb.group({
       employeeId: [null], // Optional
       firstName: ['', Validators.required],
@@ -38,17 +48,18 @@ export class EmployeeCraftingComponent implements OnInit {
       zip: ['',
         [
           Validators.required,
-          Validators.pattern(/^\d{5}$/) // 5-digit zip
+          Validators.pattern(/^\d{5}$/)
         ]
       ]
     });
-
-    this.positions = this.dataService.getPositions();
-    this.states = this.dataService.getStates();
   }
 
   ngOnInit(): void {
+    this.subscribeToObservables();
+  }
 
+
+  private subscribeToObservables() {
     this.employeeService.getAddEmployeeObservable().subscribe((value: Boolean) => {
       if (value) {
         this.employeeForm.reset();
@@ -64,7 +75,6 @@ export class EmployeeCraftingComponent implements OnInit {
     }
     );
   }
-
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['employee'] && this.employee) {
