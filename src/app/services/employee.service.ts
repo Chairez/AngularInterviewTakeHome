@@ -1,9 +1,37 @@
 import { Injectable } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class EmployeeService {
+
+  private employeeChangeSubject = new BehaviorSubject<Boolean>(false);
+
+  addEmployeeChangeObservable(value: Boolean) {
+    this.employeeChangeSubject.next(value);
+  }
+
+  getEmployeeChangeObservable() {
+    return this.employeeChangeSubject.asObservable();
+  }
+
+  removeEmployee($event: any) {
+    const index = this.employees.findIndex(emp => emp.employeeId === $event.employeeId);
+    if (index !== -1) {
+      this.employees.splice(index, 1);
+    }
+  }
+
+  updateEmployee(updatedEmployee: any) {
+    const index = this.employees.findIndex(emp => emp.employeeId === updatedEmployee.employeeId);
+    if (index !== -1) {
+      this.employees[index] = updatedEmployee;
+    } else {
+      this.employees.push(updatedEmployee);
+    }
+  }
+
   employees = [
     {
       employeeId: 1,

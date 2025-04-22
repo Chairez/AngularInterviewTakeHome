@@ -1,0 +1,43 @@
+@use "../../../vars.scss" as *;
+
+mat-list-item {
+    color: $white-color !important;
+}
+
+mat-list-item h4 {
+    font-weight: 500 !important;
+    color: $white-color !important;
+}
+
+.divider {
+    background-color: $white-color !important;
+    height: 2px;
+}
+
+.emp-name {
+    font-size: 1rem !important;
+    font-weight: 500 !important;
+}
+
+.emp-position {
+    font-size: 0.8rem !important;
+    font-weight: 400 !important;
+}
+
+.two-columns {
+    display: flex;
+    gap: 16px;
+}
+
+.left-column {    
+    flex: 1;
+    padding: 16px;
+    color: $white-color;
+}
+
+.right-column {
+    flex: 1;
+    padding-top: 4vh;
+    text-align: right;
+    color: $white-color;
+}

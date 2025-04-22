@@ -4,6 +4,20 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class DataService {
+  
+  getStates(): any {
+    return this.allStates;
+  }
+
+  getPositionName(positionId: string) {
+    const position = this.jobPositions.find((pos: any) => pos.id === Number(positionId));
+    return position ? position.title : 'Unknown Position';
+  }
+
+  getPositions(): any {
+    return this.jobPositions;
+  }
+
   jobPositions = [
     {
       title: 'UX Designer',

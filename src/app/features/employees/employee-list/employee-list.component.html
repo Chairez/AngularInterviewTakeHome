@@ -1,0 +1,24 @@
+<div class="two-columns">
+    <div class="left-column">
+        <h1>
+            Employees
+        </h1>
+    </div>
+    <div class="right-column">
+        <button mat-button color="primary" (click)="addEmployee()">Add New</button>
+    </div>
+</div>
+
+<mat-nav-list>
+    <mat-list-item *ngFor="let emp of employees" (click)="select(emp)" class="employee-tile">
+        <img matListAvatar src="assets/images/default-image.png" alt="Avatar" />
+
+        <div matLine class="emp-info">
+            <div class="emp-name">{{ emp.firstName }} {{ emp.lastName }}</div>
+            <div class="emp-position">{{ getPositionName(emp.positionId) }}</div>
+        </div>
+
+        <mat-icon class="chevron-icon">chevron_right</mat-icon>
+        <mat-divider *ngIf="emp === this.selectedEmployee" class="divider"></mat-divider>
+    </mat-list-item>
+</mat-nav-list>

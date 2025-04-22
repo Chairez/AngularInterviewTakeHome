@@ -10,13 +10,20 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
-
+import { EmployeeCraftingComponent } from './features/employees/employee-crafting/employee-crafting.component';
+import { EmployeeListComponent } from './features/employees/employee-list/employee-list.component';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatListModule } from '@angular/material/list';
+import { MatIconModule } from '@angular/material/icon';
+import { MatCardModule } from '@angular/material/card';
 
 @NgModule({
   declarations: [
     AppComponent,
     EmployeesComponent,
-    HomeComponent
+    HomeComponent,
+    EmployeeCraftingComponent,
+    EmployeeListComponent
   ],
   imports: [
     BrowserModule,
@@ -28,6 +35,10 @@ import { MatSelectModule } from '@angular/material/select';
     MatFormFieldModule,
     MatInputModule,
     MatSelectModule,
+    MatSidenavModule,
+    MatListModule,
+    MatIconModule,    
+    MatCardModule
   ],
   providers: [],
   bootstrap: [AppComponent]

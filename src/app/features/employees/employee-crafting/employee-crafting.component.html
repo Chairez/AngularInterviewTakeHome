@@ -1,0 +1,117 @@
+<mat-card class="employee-card">
+    <mat-card-content>
+        <ng-container *ngIf="employeeForm">
+            <form [formGroup]="employeeForm" (ngSubmit)="save()" class="employee-form">
+                <!-- Row 1: First & Last Name -->
+                <div class="row">
+                    <mat-form-field appearance="standard" class="half-width">
+                        <mat-label>First Name</mat-label>
+                        <input matInput formControlName="firstName">
+                        <mat-error *ngIf="employeeForm.get('firstName')?.hasError('required')">
+                            First name is required
+                        </mat-error>                        
+                    </mat-form-field>
+
+                    <mat-form-field appearance="standard" class="half-width">
+                        <mat-label>Last Name</mat-label>
+                        <input matInput formControlName="lastName">
+                        <mat-error *ngIf="employeeForm.get('lastName')?.hasError('required')">
+                            Last name is required
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+
+                <!-- Row 2: Email & Phone -->
+                <div class="row">
+                    <mat-form-field appearance="standard" class="half-width">
+                        <mat-label>Email</mat-label>
+                        <input matInput formControlName="email">
+                        <mat-error *ngIf="employeeForm.get('email')?.hasError('required')">
+                            Email is required
+                        </mat-error>
+                        <mat-error *ngIf="employeeForm.get('email')?.hasError('email')">
+                            Invalid email format
+                        </mat-error>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="standard" class="half-width">
+                        <mat-label>Phone Number</mat-label>
+                        <input matInput formControlName="phoneNumber">
+                        <mat-error *ngIf="employeeForm.get('phoneNumber')?.hasError('required')">
+                            Phone number is required
+                        </mat-error>
+                        <mat-error *ngIf="employeeForm.get('phoneNumber')?.hasError('pattern')">
+                            Invalid phone number format
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+
+                <!-- Row 3: Position -->
+                <mat-form-field appearance="standard" class="full-width">
+                    <mat-label>Job Position</mat-label>
+                    <mat-select formControlName="positionId">
+                        <mat-option *ngFor="let position of positions" [value]="position.id">
+                            {{ position.title }}
+                        </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="employeeForm.get('positionId')?.hasError('required')">
+                        Job position is required
+                    </mat-error>
+                </mat-form-field>
+
+                <!-- Row 4: Job Requirements -->
+                <mat-form-field appearance="standard" class="full-width">
+                    <mat-label>Job Requirements</mat-label>
+                    <textarea matInput rows="3" formControlName="jobRequirements"></textarea>
+                </mat-form-field>
+
+                <!-- Row 5: Address Line -->
+                <mat-form-field appearance="standard" class="full-width">
+                    <mat-label>Address</mat-label>
+                    <input matInput formControlName="address1">
+                    <mat-error *ngIf="employeeForm.get('address1')?.hasError('required')">
+                        Address is required
+                    </mat-error>
+                </mat-form-field>
+
+                <!-- Row 6: City / State / Zip -->
+                <div class="row">
+                    <mat-form-field appearance="standard" class="third-width">
+                        <mat-label>City</mat-label>
+                        <input matInput formControlName="city">
+                        <mat-error *ngIf="employeeForm.get('city')?.hasError('required')">
+                            City is required
+                        </mat-error>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="standard" class="third-widths">
+                        <mat-label>State</mat-label>
+                        <mat-select formControlName="state">
+                            <mat-option *ngFor="let state of states" [value]="state.abbreviation">{{ state.name }}</mat-option>
+                        </mat-select>
+                        <mat-error *ngIf="employeeForm.get('state')?.hasError('required')">
+                            State is required
+                        </mat-error>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="standard" class="third-width">
+                        <mat-label>Zip Code</mat-label>
+                        <input matInput formControlName="zip">
+                        <mat-error *ngIf="employeeForm.get('zip')?.hasError('required')">
+                            Zip code is required
+                        </mat-error>
+                        <mat-error *ngIf="employeeForm.get('zip')?.hasError('pattern')">
+                            Invalid zip code format
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="actions">
+                    <button mat-stroked-button color="warn" type="button" (click)="remove()">Remove Employee</button>
+                    <button mat-raised-button color="primary" type="submit">Save</button>
+                </div>
+            </form>
+        </ng-container>
+    </mat-card-content>
+</mat-card>
